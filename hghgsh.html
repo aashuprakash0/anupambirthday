@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anupam Didi 🎂</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --pink:   #f472b6;
+      --rose:   #fb7185;
+      --gold:   #fbbf24;
+      --deep:   #1a0a2e;
+      --card:   rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.14);
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--deep);
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    /* ── Animated BG ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%,  #7c3aed55 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%,  #ec489955 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 55% 45%,  #fbbf2422 0%, transparent 55%);
+      animation: bgPulse 8s ease-in-out infinite alternate;
+    }
+    @keyframes bgPulse {
+      from { opacity: .7; }
+      to   { opacity: 1;  }
+    }
+
+    /* ── Stars ── */
+    .stars { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+    .star  {
+      position:absolute; border-radius:50%;
+      background:#fff; opacity:0;
+      animation: twinkle var(--d,3s) var(--dl,0s) ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%,100%{ opacity:0; transform:scale(.5); }
+      50%    { opacity:.85; transform:scale(1); }
+    }
+
+    /* ── Canvas ── */
+    canvas { position:fixed; inset:0; pointer-events:none; z-index:5; }
+
+    /* ── Layout ── */
+    .wrap {
+      position: relative; z-index: 10;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: clamp(22px, 5vw, 40px);
+      width: min(680px, 96%);
+      box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.06);
+      animation: cardIn .6s cubic-bezier(.22,1,.36,1);
+    }
+    @keyframes cardIn {
+      from { transform: translateY(30px) scale(.95); opacity:0; }
+      to   { transform: translateY(0)    scale(1);   opacity:1; }
+    }
+    .hidden { display: none !important; }
+
+    /* ── Headings ── */
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 6vw, 44px);
+      line-height: 1.18;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #fff 30%, var(--gold) 70%, var(--pink) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    p {
+      font-size: clamp(14px, 3.8vw, 18px);
+      line-height: 1.65;
+      opacity: .9;
+      margin-bottom: 14px;
+    }
+
+    /* ── Tag / badge ── */
+    .tag {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: clamp(12px, 3vw, 15px);
+      font-weight: 900;
+      letter-spacing: .04em;
+      background: rgba(244,114,182,.18);
+      border: 1px solid rgba(244,114,182,.35);
+      color: var(--pink);
+      margin-bottom: 16px;
+    }
+
+    /* ── Countdown ── */
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 18px 0;
+    }
+    .cd-block {
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 6px;
+      text-align: center;
+    }
+    .cd-num {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 7vw, 44px);
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .cd-label {
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: .6;
+      margin-top: 4px;
+    }
+
+    /* ── Input ── */
+    .input-row {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      justify-content: center; margin-top: 14px;
+    }
+    input {
+      flex: 1; min-width: 180px; max-width: 280px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(15px, 3.8vw, 17px);
+      outline: none;
+      transition: border .2s;
+    }
+    input::placeholder { opacity: .5; }
+    input:focus { border-color: var(--pink); }
+    input:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* ── Buttons ── */
+    .btn {
+      padding: 13px 26px;
+      border: none; border-radius: 999px;
+      background: linear-gradient(135deg, var(--rose), var(--pink));
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(14px, 3.8vw, 17px);
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform .18s, box-shadow .18s;
+      box-shadow: 0 8px 22px rgba(244,114,182,.35);
+    }
+    .btn:hover:not(:disabled) { transform: scale(1.05); box-shadow: 0 12px 30px rgba(244,114,182,.5); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; transform: none !important; }
+
+    .btn-dark {
+      background: rgba(255,255,255,.08);
+      border: 1.5px solid var(--border);
+      box-shadow: none;
+      color: #fff;
+    }
+    .btn-dark:hover:not(:disabled) { background: rgba(255,255,255,.14); box-shadow: none; }
+
+    .btn-row {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      justify-content: center; margin-top: 16px;
+    }
+
+    /* ── Error ── */
+    .error-msg {
+      margin-top: 12px;
+      color: #fda4af;
+      font-weight: 900;
+      font-size: clamp(13px, 3.5vw, 16px);
+      text-align: center;
+      min-height: 22px;
+    }
+
+    /* ── Hint ── */
+    .hint {
+      margin-top: 14px;
+      font-size: clamp(12px, 3.2vw, 15px);
+      opacity: .65;
+    }
+    .hint b { color: var(--gold); }
+
+    /* ── Music btn ── */
+    .music-btn {
+      margin-top: 14px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(13px, 3.5vw, 16px);
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .music-btn:hover { background: rgba(255,255,255,.12); }
+
+    /* ── Gift ── */
+    .gift-wrap { display:flex; justify-content:center; margin: 18px 0 10px; }
+    .gift {
+      width: 130px; height: 130px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.1);
+      border: 2px solid rgba(255,255,255,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 62px; cursor: pointer;
+      transition: transform .25s;
+      user-select: none;
+      animation: giftShake 1.8s ease-in-out infinite;
+    }
+    @keyframes giftShake {
+      0%,100% { transform: rotate(0deg) scale(1);   }
+      20%      { transform: rotate(5deg) scale(1.04); }
+      40%      { transform: rotate(-5deg) scale(1.04); }
+      60%      { transform: rotate(4deg) scale(1.04); }
+      80%      { transform: rotate(0deg) scale(1);   }
+    }
+    .gift.opened { animation: none; transform: scale(1.12); background: rgba(255,255,255,.18); }
+
+    /* ── Slideshow ── */
+    .slideshow {
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid rgba(255,255,255,.85);
+      margin: 18px auto;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4), 0 0 0 6px rgba(244,114,182,.2);
+    }
+    .slideshow img {
+      width:100%; height:100%; object-fit:cover;
+      position:absolute; top:0; left:0;
+      opacity:0; transition:opacity .9s ease;
+    }
+    .slideshow img.active { opacity:1; }
+
+    /* ── Message box ── */
+    .msg-box {
+      margin-top: 14px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(0,0,0,.3);
+      border: 1px solid var(--border);
+      font-size: clamp(15px, 4vw, 18px);
+      line-height: 1.65;
+      min-height: 100px;
+      text-align: left;
+    }
+
+    /* ── Footer note ── */
+    .footer-note {
+      margin-top: 16px;
+      font-size: clamp(12px, 3.2vw, 15px);
+      opacity: .75;
+      font-weight: 700;
+    }
+
+    /* ── Balloons ── */
+    .balloon {
+      position: fixed;
+      bottom: -140px;
+      width: 54px; height: 72px;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: floatUp var(--dur,7s) var(--dl,0s) linear infinite;
+      opacity: .88; z-index: 2;
+    }
+    .balloon::after {
+      content: '';
+      position: absolute; left: 50%; top: 70px;
+      width: 1.5px; height: 55px;
+      background: rgba(255,255,255,.6);
+      transform: translateX(-50%);
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0)    rotate(-4deg); }
+      50%  { transform: translateY(-50vh) rotate(4deg); }
+      100% { transform: translateY(-120vh) rotate(-2deg); }
+    }
+
+    /* ── Animations ── */
+    .fade-in {
+      animation: fadeIn .65s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(12px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* live status dot */
+    .live-dot {
+      display: inline-block; width:9px; height:9px;
+      border-radius:50%; background:#22c55e;
+      margin-right:6px;
+      animation: blink 1.2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100%{ opacity:1; } 50%{ opacity:.3; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Stars -->
+  <div class="stars" id="stars"></div>
+
+  <!-- Confetti canvas -->
+  <canvas id="confetti"></canvas>
+
+  <!-- Music -->
+  <audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="wrap">
+
+    <!-- ═══════════ LOCK SCREEN ═══════════ -->
+    <div class="card" id="lockScreen">
+      <div class="tag">🔐 Private — Sirf Didi Ke Liye</div>
+
+      <h1>Anupam Didi<br/>Ka Secret Page 🤫</h1>
+
+      <p>
+        Yeh page ek aisi didi ke liye hai joh<br/>
+        sabki life mein <b>chaos + comfort</b> dono hai 😭💙
+      </p>
+
+      <!-- Countdown grid -->
+      <div id="countdownSection">
+        <div class="countdown-grid" id="cdGrid">
+          <div class="cd-block"><div class="cd-num" id="cdD">--</div><div class="cd-label">Days</div></div>
+          <div class="cd-block"><div class="cd-num" id="cdH">--</div><div class="cd-label">Hours</div></div>
+          <div class="cd-block"><div class="cd-num" id="cdM">--</div><div class="cd-label">Mins</div></div>
+          <div class="cd-block"><div class="cd-num" id="cdS">--</div><div class="cd-label">Secs</div></div>
+        </div>
+        <p id="cdStatus" style="text-align:center; font-weight:700; font-size:15px; opacity:.75;">
+          ⏳ Countdown to Didi's Birthday...
+        </p>
+      </div>
+
+      <div class="input-row">
+        <input id="passInput" type="password" placeholder="🔒 Locked until 7 April..." disabled />
+        <button class="btn" id="unlockBtn" disabled>Unlock 🗝️</button>
+      </div>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <div class="hint">
+        💡 Hint: <b>Your school friend</b> ka naam 😉
+      </div>
+    </div>
+
+    <!-- ═══════════ SURPRISE SCREEN ═══════════ -->
+    <div class="card hidden fade-in" id="surpriseCard">
+
+      <div class="tag">
+        <span class="live-dot"></span>7 April — Didi Birthday LIVE 🎉
+      </div>
+
+      <h1>Happy Birthday<br/>Anupam Didi! 🎂🔥</h1>
+
+      <!-- Gift -->
+      <div class="gift-wrap">
+        <div class="gift" id="giftBox" title="Open karo! 🎁">🎁</div>
+      </div>
+
+      <p id="giftHint" style="text-align:center; font-size:15px; opacity:.7; margin-bottom:8px;">
+        👆 Pehle gift open karo, Didi 😌
+      </p>
+
+      <button class="music-btn" id="musicBtn">🎵 Music: ON</button>
+
+      <!-- ─── Gift Content (hidden until opened) ─── -->
+      <div id="giftContent" class="hidden">
+        <div class="tag" id="modeTag" style="margin-top:16px;">Mode: Cinematic ✨</div>
+
+        <div class="slideshow" id="slideshow">
+          <img src="1.jpeg" class="active" alt="">
+          <img src="2.jpeg" alt="">
+          <img src="3.jpeg" alt="">
+          <img src="4.jpeg" alt="">
+          <img src="5.jpeg" alt="">
+        </div>
+
+        <div class="msg-box" id="msgBox">Loading Didi ke liye special message... 🥺</div>
+
+        <div class="btn-row">
+          <button class="btn"      id="roastBtn">Roast Mode 🔥</button>
+          <button class="btn btn-dark" id="cuteBtn">Sweet Mode 💛</button>
+          <button class="btn"      id="moreBtn">Next 🎲</button>
+        </div>
+
+        <div class="footer-note">
+          PS: Tu meri bestest muhnboli behan hai, always 😭💙
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // ══════════════════════════════════════════
+    //  CONFIG
+    // ══════════════════════════════════════════
+    const SURPRISE_TIME    = new Date("2026-04-01T00:00:00").getTime();
+    const CORRECT_PASSWORD = "bhuljhari";
+
+    // ══════════════════════════════════════════
+    //  STARS
+    // ══════════════════════════════════════════
+    (function makeStars(){
+      const c = document.getElementById("stars");
+      for(let i = 0; i < 120; i++){
+        const s = document.createElement("div");
+        s.className = "star";
+        const sz = 1 + Math.random()*2.5;
+        s.style.cssText = `
+          width:${sz}px; height:${sz}px;
+          left:${Math.random()*100}vw;
+          top:${Math.random()*100}vh;
+          --d:${2+Math.random()*5}s;
+          --dl:${Math.random()*4}s;
+        `;
+        c.appendChild(s);
+      }
+    })();
+
+    // ══════════════════════════════════════════
+    //  WRONG-PASS ROASTS
+    // ══════════════════════════════════════════
+    const wrongRoasts = [
+      "😂 Galat password! School friend ka naam yaad nahi? Serious case hai yeh.",
+      "❌ Nahi! Itna bhi yaad nahi raha tumhe? Thodi mehnat karo Didi!",
+      "🤡 Wrong! Hint padh lo — School Friend. Simple hai yaar!",
+      "😭 Itni badi didi ho, password bhi crack nahi ho raha? Embarrassing.",
+      "🔐 Access Denied. Brain on hai ya off hai abhi?",
+      "😌 Wrong again. Clue: Woh banda joh tumhe FOREVER jhelta hai 💀"
+    ];
+    let wrongCount = 0;
+
+    // ══════════════════════════════════════════
+    //  MESSAGES
+    // ══════════════════════════════════════════
+    const roastMsgs = [
+      "🔥 Happy Birthday Didi!\nTumhara janamdin hai, toh aaj ke liye sab maaf — kal se roasting resume hogi. 😂",
+      "🤡 Saal bhar sirf lectures deti rahi...\n'Yeh mat karo, woh mat karo'\n...aaj tumhara birthday hai toh thank you 😭 (kal se fir wahi drama shuru)",
+      "😂 Didi, tum itna sochti kyu ho?\nLife mein chill karo thoda!\nWaise — tum best ho, par yeh tum khud bhi jaanti ho 😌",
+      "🎂 Birthday wali Didi:\nRoast count: Infinite ♾️\nPyaar count: Usse bhi zyada 💙\nBass. Happy Birthday. Ab cake khao. 🍰",
+      "💀 Tum itni responsible kyu ho yaar?\nKuch toh galat karo life mein!\nWaise — seriously, tum best didi ho. Bilkul sach. 😭🔥"
+    ];
+
+    const cuteMsgs = [
+      "💛 Anupam Didi,\nTum woh person ho joh bina pooche samajh jaati ho.\nYeh rare hai. Aur tum rare ho. Happy Birthday 🎂✨",
+      "😭 Muhnboli behan hoke bhi asli behan se zyada feel hoti ho.\nYeh bond kuch alag hi hai.\nHappy Birthday, always and forever 💙",
+      "🌸 Aaj tera din hai Didi.\nSab tension, sab drama — sab baad mein.\nAaj sirf khushi, sirf celebration, sirf tu 🎉",
+      "✨ Tum sirf didi nahi — tum woh safe space ho\njahan baat karna asaan lagta hai.\nHappy Birthday to the best of the best 💛",
+      "🥺 Tumhare bina yeh friend group incomplete hai.\nAur meri life bhi.\nHappy Birthday Didi. Love you loads. 💙🎂"
+    ];
+
+    const cinematicMsgs = [
+      "🎬 Scene 1 — Anupam Didi enters the chat.\nSabka mood automatically 10x better.\nYeh magic hai. Aur tum magic ho. ✨",
+      "📽️ In a world full of 'meh' people...\nTum ek 'wow' ho.\nHappy Birthday Didi 🎂🔥",
+      "🎞️ Birthday loading... ████████ 100%\nSurprise deployed ✅\nMessage delivered ✅\nDidi ki smile — priceless 😭💙",
+      "🌟 Every year you level up.\nNot just in age — in vibe, in grace, in chaos too.\nHappy Birthday to the most iconic Didi 🎉"
+    ];
+
+    let currentMode = "cinematic";
+    let giftOpened  = false;
+
+    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+    // ── Typing effect ──
+    let typingTimer;
+    function typeText(text, speed=22){
+      clearInterval(typingTimer);
+      const box = document.getElementById("msgBox");
+      box.textContent = "";
+      const plain = text.replace(/<br\s*\/?>/gi,"\n").replace(/<[^>]*>/g,"");
+      let i = 0;
+      typingTimer = setInterval(()=>{
+        box.textContent = plain.slice(0,i);
+        i++;
+        if(i > plain.length) clearInterval(typingTimer);
+      }, speed);
+    }
+
+    function setMode(mode){
+      currentMode = mode;
+      const tag = document.getElementById("modeTag");
+      if(mode==="roast"){
+        tag.textContent = "Mode: Roast 🔥";
+        typeText(pick(roastMsgs), 14);
+      } else if(mode==="cute"){
+        tag.textContent = "Mode: Sweet 💛";
+        typeText(pick(cuteMsgs), 18);
+      } else {
+        tag.textContent = "Mode: Cinematic ✨";
+        typeText(pick(cinematicMsgs), 20);
+      }
+    }
+
+    document.getElementById("roastBtn").addEventListener("click", ()=>setMode("roast"));
+    document.getElementById("cuteBtn").addEventListener("click",  ()=>setMode("cute"));
+    document.getElementById("moreBtn").addEventListener("click",  ()=>setMode(currentMode));
+
+    // ══════════════════════════════════════════
+    //  COUNTDOWN
+    // ══════════════════════════════════════════
+    function pad(n){ return String(n).padStart(2,"0"); }
+
+    function tickCountdown(){
+      const diff = SURPRISE_TIME - Date.now();
+      const cdD = document.getElementById("cdD");
+      const cdH = document.getElementById("cdH");
+      const cdM = document.getElementById("cdM");
+      const cdS = document.getElementById("cdS");
+      const cdStatus = document.getElementById("cdStatus");
+      const passInput = document.getElementById("passInput");
+      const unlockBtn = document.getElementById("unlockBtn");
+
+      if(diff <= 0){
+        cdD.textContent = "00"; cdH.textContent = "00";
+        cdM.textContent = "00"; cdS.textContent = "00";
+        cdStatus.innerHTML = `<span class="live-dot"></span> 🎉 LIVE! Password enter karo Didi!`;
+        passInput.disabled = false;
+        passInput.placeholder = "Password daalo... 🔓";
+        unlockBtn.disabled = false;
+        clearInterval(cdInterval);
+        return;
+      }
+
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff / 3600000) % 24);
+      const m = Math.floor((diff / 60000)   % 60);
+      const s = Math.floor((diff / 1000)    % 60);
+
+      cdD.textContent = pad(d); cdH.textContent = pad(h);
+      cdM.textContent = pad(m); cdS.textContent = pad(s);
+    }
+    tickCountdown();
+    const cdInterval = setInterval(tickCountdown, 1000);
+
+    // ══════════════════════════════════════════
+    //  UNLOCK
+    // ══════════════════════════════════════════
+    async function tryUnlock(){
+      if(Date.now() < SURPRISE_TIME){
+        alert("Abhi nahi Didi 😌 Countdown khatam hone do ⏳");
+        return;
+      }
+      const val = document.getElementById("passInput").value.trim().toLowerCase();
+      const err = document.getElementById("errorMsg");
+
+      if(val === CORRECT_PASSWORD){
+        err.textContent = "";
+        document.getElementById("lockScreen").classList.add("hidden");
+        const sc = document.getElementById("surpriseCard");
+        sc.classList.remove("hidden");
+        sc.classList.add("fade-in");
+
+        spawnBalloons(28);
+        startConfetti();
+
+        try{
+          await document.getElementById("bgMusic").play();
+          document.getElementById("musicBtn").textContent = "⏸ Music: ON";
+        }catch(_){
+          document.getElementById("musicBtn").textContent = "🎵 Tap to Play 🎵";
+        }
+      } else {
+        wrongCount++;
+        const roast = wrongRoasts[(wrongCount-1) % wrongRoasts.length];
+        err.textContent = roast;
+        document.getElementById("passInput").value = "";
+        document.getElementById("passInput").focus();
+      }
+    }
+
+    document.getElementById("unlockBtn").addEventListener("click", tryUnlock);
+    document.getElementById("passInput").addEventListener("keydown", e=>{
+      if(e.key==="Enter") tryUnlock();
+    });
+
+    // ══════════════════════════════════════════
+    //  GIFT
+    // ══════════════════════════════════════════
+    document.getElementById("giftBox").addEventListener("click", ()=>{
+      if(giftOpened) return;
+      giftOpened = true;
+
+      const gb = document.getElementById("giftBox");
+      gb.classList.add("opened");
+      gb.textContent = "🎊";
+
+      document.getElementById("giftHint").style.display = "none";
+
+      const gc = document.getElementById("giftContent");
+      gc.classList.remove("hidden");
+      gc.classList.add("fade-in");
+
+      startSlideshow();
+      setMode("cinematic");
+    });
+
+    // ══════════════════════════════════════════
+    //  MUSIC
+    // ══════════════════════════════════════════
+    let musicPlaying = true;
+    document.getElementById("musicBtn").addEventListener("click", async ()=>{
+      const aud = document.getElementById("bgMusic");
+      const btn = document.getElementById("musicBtn");
+      try{
+        if(!musicPlaying){
+          await aud.play(); musicPlaying=true;
+          btn.textContent = "⏸ Music: ON";
+        } else {
+          aud.pause(); musicPlaying=false;
+          btn.textContent = "🎵 Music: OFF";
+        }
+      }catch(_){
+        alert("music.mp3 file rakho same folder mein 😌");
+      }
+    });
+
+    // ══════════════════════════════════════════
+    //  SLIDESHOW
+    // ══════════════════════════════════════════
+    function startSlideshow(){
+      const imgs = Array.from(document.querySelectorAll("#slideshow img"));
+      imgs.forEach(img=>{ img.onerror=()=>img.remove(); });
+      let idx = 0;
+      setInterval(()=>{
+        const live = Array.from(document.querySelectorAll("#slideshow img"));
+        if(live.length <= 1) return;
+        live.forEach(i=>i.classList.remove("active"));
+        idx = (idx+1) % live.length;
+        live[idx].classList.add("active");
+      }, 2200);
+    }
+
+    // ══════════════════════════════════════════
+    //  BALLOONS
+    // ══════════════════════════════════════════
+    const BALLOON_COLORS = ["#f472b6","#fb7185","#a78bfa","#60a5fa","#34d399","#fbbf24","#f97316","#e879f9"];
+    function spawnBalloons(n){
+      for(let i=0;i<n;i++){
+        const b = document.createElement("div");
+        b.className = "balloon";
+        b.style.cssText = `
+          background:${BALLOON_COLORS[Math.floor(Math.random()*BALLOON_COLORS.length)]};
+          left:${Math.random()*100}vw;
+          --dur:${5+Math.random()*7}s;
+          --dl:${Math.random()*4}s;
+          transform:scale(${0.6+Math.random()*0.8});
+        `;
+        document.body.appendChild(b);
+      }
+    }
+
+    // ══════════════════════════════════════════
+    //  CONFETTI
+    // ══════════════════════════════════════════
+    const canvas = document.getElementById("confetti");
+    const ctx    = canvas.getContext("2d");
+    let pieces   = [];
+    let confettiRunning = false;
+
+    function resizeCanvas(){
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function startConfetti(){
+      pieces = [];
+      for(let i=0;i<260;i++){
+        pieces.push({
+          x: Math.random()*canvas.width,
+          y: Math.random()*canvas.height - canvas.height,
+          w: 5+Math.random()*8,
+          h: 5+Math.random()*8,
+          speed: 2+Math.random()*5,
+          angle: Math.random()*360,
+          spin:  (Math.random()-.5)*.15,
+          hue:   Math.random()*360
+        });
+      }
+      if(!confettiRunning){ confettiRunning=true; drawConfetti(); }
+    }
+
+    function drawConfetti(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      pieces.forEach(p=>{
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.fillStyle = `hsl(${p.hue},100%,62%)`;
+        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+        ctx.restore();
+        p.y     += p.speed;
+        p.angle += p.spin;
+        if(p.y > canvas.height){ p.y = -20; p.x = Math.random()*canvas.width; }
+      });
+      requestAnimationFrame(drawConfetti);
+    }
+  </script>
+</body>
+</html>
